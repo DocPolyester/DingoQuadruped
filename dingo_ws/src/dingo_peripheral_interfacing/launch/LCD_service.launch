@@ -1,0 +1,3 @@
+<launch>
+    <node pkg = "dingo_lcd_interfacing" exec = "dingo_lcd_interfacing" name = "dingo_LCD_node" output="screen"></node>
+</launch>

@@ -1,0 +1,7 @@
+std_msgs/Header header
+builtin_interfaces/Time stamp
+string frame_id
+dingo_control_msg/Angle fl_foot
+dingo_control_msg/Angle fr_foot
+dingo_control_msg/Angle rl_foot
+dingo_control_msg/Angle rr_foot

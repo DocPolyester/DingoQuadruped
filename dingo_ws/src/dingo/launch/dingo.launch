@@ -1,0 +1,35 @@
+<launch>
+    <arg name="is_sim" default="0"/>
+    <arg name="is_physical" default="1"/>
+    <arg name="use_joystick" default="0"/>
+    <arg name="use_keyboard" default="0"/>
+    <arg name="serial_port" default="/dev/ttyS0"/>
+    <arg name="use_imu" default="0"/>
+
+    <group if="$(var is_physical)">
+        <!-- Communication Node between Arduino and Pi -->
+        <!-- node pkg="rosserial_python" exec="serial_node" name="dingo_rosserial" args="$(var serial_port)" output="screen"/-->
+
+        <!-- LCD Screen -->
+        <node pkg = "dingo_peripheral_interfacing" exec = "dingo_lcd_interfacing" name = "dingo_LCD_node" output="screen"></node>
+    </group>
+
+    <!-- If want to use the joystick, launch joystick node -->
+    <group if="$(var use_joystick)">
+        <node pkg="joy" exec="joy_node" name="JOYSTICK">
+            <param name="autorepeat_rate" value="30"/>
+            <!-- <param name="joy_node/dev" value="/dev/input/js0"/>
+            <arg name="coalesce_interval" value="0.02"/>
+            -->
+        </node>
+    </group>
+
+    <group if="$(var use_keyboard)">
+        <node pkg = "dingo_input_interfacing" exec = "Keyboard" name = "keyboard_input_listener" output="screen"></node>
+    </group>
+    
+    <!-- Dingo Driver -->
+    <node pkg="dingo" exec="dingo_driver"
+        name="dingo" args="$(var is_sim) $(var is_physical) $(var use_imu)" output="screen"/>
+</launch>
+    
