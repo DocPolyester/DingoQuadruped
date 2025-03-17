@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy2 as rospy
-import spidev as SPI
+#import spidev as SPI
 import dingo_peripheral_interfacing.LCD_1inch47 as LCD_1inch47
 from PIL import Image, ImageDraw, ImageFont
 import logging
