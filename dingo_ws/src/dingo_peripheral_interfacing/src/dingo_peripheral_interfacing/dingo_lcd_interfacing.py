@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 import rospy2 as rospy
 import spidev as SPI
-import LCD_1inch47
+import dingo_peripheral_interfacing.LCD_1inch47 as LCD_1inch47
 from PIL import Image, ImageDraw, ImageFont
 import logging
 import os
-import rospkg
+#import rospkg
+from ament_index_python.packages import get_package_share_directory
+
 import socket
 import time
 from std_msgs.msg import Float64
-from dingo_peripheral_interfacing.msg import ElectricalMeasurements
+from dingo_peripheral_interfacing_msg.msg import ElectricalMeasurements
 
-rospack = rospkg.RosPack()
-rospack.get_path('dingo_peripheral_interfacing') + "/lib/emptybatterystatus_white.png"
+imagepath = package_share_directory = get_package_share_directory('dingo_peripheral_interfacing')
+
 
 class DingoDisplayNode:
     def __init__(self):
@@ -76,7 +78,8 @@ class DingoDisplayNode:
             ## Battery indication bar
             black= Image.new("RGB", (320, 172), "black")
 
-            batt_status = Image.open(rospack.get_path('dingo_peripheral_interfacing') + "/lib/emptybatterystatus_white.png")
+            batt_status = Image.open(imagepath + "/lib/emptybatterystatus_white.png")
+
 
             # batt_status = batt_status.rotate(180)
             batt_draw = ImageDraw.Draw(batt_status)
@@ -136,7 +139,8 @@ class DingoDisplayNode:
             self.disp.module_exit()
 
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
+def main():
     node = DingoDisplayNode()
     rospy.loginfo("Display node started, ouputting to display")
     node.loop()

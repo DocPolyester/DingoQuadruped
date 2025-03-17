@@ -75,20 +75,59 @@ class Controller:
     def publish_task_space_command(self, rotated_foot_locations):
 
         task_space_message = TaskSpace()
-        task_space_message.FR_foot = Point(rotated_foot_locations[0, 0] - self.config.LEG_ORIGINS[0, 0], rotated_foot_locations[1, 0] - self.config.LEG_ORIGINS[1, 0], rotated_foot_locations[2, 0] - self.config.LEG_ORIGINS[2, 0])
-        task_space_message.FL_foot = Point(rotated_foot_locations[0, 1] - self.config.LEG_ORIGINS[0, 1], rotated_foot_locations[1, 1] - self.config.LEG_ORIGINS[1, 1], rotated_foot_locations[2, 1] - self.config.LEG_ORIGINS[2, 1])
-        task_space_message.RR_foot = Point(rotated_foot_locations[0, 2] - self.config.LEG_ORIGINS[0, 2], rotated_foot_locations[1, 2] - self.config.LEG_ORIGINS[1, 2], rotated_foot_locations[2, 2] - self.config.LEG_ORIGINS[2, 2])
-        task_space_message.RL_foot = Point(rotated_foot_locations[0, 3] - self.config.LEG_ORIGINS[0, 3], rotated_foot_locations[1, 3] - self.config.LEG_ORIGINS[1, 3], rotated_foot_locations[2, 3] - self.config.LEG_ORIGINS[2, 3])
+
+        fr_point = Point()
+        fr_point.x = rotated_foot_locations[0, 0] - self.config.LEG_ORIGINS[0, 0]
+        fr_point.y = rotated_foot_locations[1, 0] - self.config.LEG_ORIGINS[1, 0]
+        fr_point.z = rotated_foot_locations[2, 0] - self.config.LEG_ORIGINS[2, 0]
+        fl_point = Point()
+        fl_point.x = rotated_foot_locations[0, 1] - self.config.LEG_ORIGINS[0, 1]
+        fl_point.y = rotated_foot_locations[1, 1] - self.config.LEG_ORIGINS[1, 1]
+        fl_point.z = rotated_foot_locations[2, 1] - self.config.LEG_ORIGINS[2, 1]
+        rr_point = Point()
+        rr_point.x = rotated_foot_locations[0, 2] - self.config.LEG_ORIGINS[0, 2]
+        rr_point.y = rotated_foot_locations[1, 2] - self.config.LEG_ORIGINS[1, 2]
+        rr_point.z = rotated_foot_locations[2, 2] - self.config.LEG_ORIGINS[2, 2]
+        rl_point = Point()
+        rl_point.x = rotated_foot_locations[0, 3] - self.config.LEG_ORIGINS[0, 3]
+        rl_point.y = rotated_foot_locations[1, 3] - self.config.LEG_ORIGINS[1, 3]
+        rl_point.z = rotated_foot_locations[2, 3] - self.config.LEG_ORIGINS[2, 3]
+
+
+        task_space_message.fr_foot = fr_point
+        task_space_message.fl_foot = fl_point
+        task_space_message.rr_foot = rr_point
+        task_space_message.rl_foot = rl_point
+
         task_space_message.header = Header(stamp = rospy.Time.now())
         self.task_space_pub.publish(task_space_message)
 
     def publish_joint_space_command(self, angle_matrix):
 
         joint_space_message = JointSpace()
-        joint_space_message.FR_foot = Angle(degrees(angle_matrix[0, 0]), degrees(angle_matrix[1, 0]), degrees(angle_matrix[2, 0]))
-        joint_space_message.FL_foot = Angle(degrees(angle_matrix[0, 1]), degrees(angle_matrix[1, 1]), degrees(angle_matrix[2, 1]))
-        joint_space_message.RR_foot = Angle(degrees(angle_matrix[0, 2]), degrees(angle_matrix[1, 2]), degrees(angle_matrix[2, 2]))
-        joint_space_message.RL_foot = Angle(degrees(angle_matrix[0, 3]), degrees(angle_matrix[1, 3]), degrees(angle_matrix[2, 3]))
+
+        fr_angle = Angle()
+        fr_angle.theta1 = degrees(angle_matrix[0, 0])
+        fr_angle.theta2 = degrees(angle_matrix[1, 0])
+        fr_angle.theta3 = degrees(angle_matrix[2, 0])
+        fl_angle = Angle()
+        fl_angle.theta1 = degrees(angle_matrix[0, 1])
+        fl_angle.theta2 = degrees(angle_matrix[1, 1])
+        fl_angle.theta3 = degrees(angle_matrix[2, 1])
+        rr_angle = Angle()
+        rr_angle.theta1 = degrees(angle_matrix[0, 2])
+        rr_angle.theta2 = degrees(angle_matrix[1, 2])
+        rr_angle.theta3 = degrees(angle_matrix[2, 2])
+        rl_angle = Angle()
+        rl_angle.theta1 = degrees(angle_matrix[0, 3])
+        rl_angle.theta2 = degrees(angle_matrix[1, 3])
+        rl_angle.theta3 = degrees(angle_matrix[2, 3])
+
+        joint_space_message.fr_foot = fr_angle
+        joint_space_message.fl_foot = fl_angle
+        joint_space_message.rr_foot = rr_angle
+        joint_space_message.rl_foot = rl_angle
+
         joint_space_message.header = Header(stamp = rospy.Time.now())
         self.joint_space_pub.publish(joint_space_message)
     

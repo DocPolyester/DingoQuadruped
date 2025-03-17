@@ -86,11 +86,11 @@ class DingoDriver:
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
         rospy.loginfo("Summary of current gait parameters:")
-        rospy.loginfo("overlap time: %.2f", self.config.overlap_time)
-        rospy.loginfo("swing time: %.2f", self.config.swing_time)
-        rospy.loginfo("z clearance: %.2f", self.config.z_clearance)
-        rospy.loginfo("back leg x shift: %.2f", self.config.rear_leg_x_shift)
-        rospy.loginfo("front leg x shift: %.2f", self.config.front_leg_x_shift)
+ #       rospy.loginfo("overlap time: %.2f", self.config.overlap_time)
+ #      rospy.loginfo("swing time: %.2f", self.config.swing_time)
+ #       rospy.loginfo("z clearance: %.2f", self.config.z_clearance)
+ #       rospy.loginfo("back leg x shift: %.2f", self.config.rear_leg_x_shift)
+ #       rospy.loginfo("front leg x shift: %.2f", self.config.front_leg_x_shift)
 
         
     

@@ -1,6 +1,6 @@
 
 import time
-import lcdconfig
+import dingo_peripheral_interfacing.lcdconfig as lcdconfig
 
 class LCD_1inch47(lcdconfig.RaspberryPi):
 
