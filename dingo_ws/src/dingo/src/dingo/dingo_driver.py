@@ -1,6 +1,7 @@
 import numpy as np
 import time
 import rospy2 as rospy
+import rclpy
 import sys
 from std_msgs.msg import Float64
 import signal
@@ -10,15 +11,12 @@ from dingo_peripheral_interfacing_msg.msg import ElectricalMeasurements
 
 
 #Fetching is_sim and is_physical from arguments
-args = sys.argv # #not working ! rospy.init(argv=sys.argv)
-if len(args) != 4: #arguments have not been provided, go to defaults (not sim, is physical)
-    is_sim = 0
-    is_physical = 1
-    use_imu = 1
-else:
-    is_sim = int(args[1])
-    is_physical = int(args[2])
-    use_imu = int(args[3])
+#not working ! rospy.myargv(argv=sys.argv)
+
+is_sim = 0
+is_physical = 1
+use_imu = 0
+
 
 from dingo_control.Controller import Controller
 from dingo_input_interfacing.InputInterface import InputInterface
@@ -86,11 +84,11 @@ class DingoDriver:
         rospy.loginfo("Input listener successfully initialised... Robot will now receive commands via Joy messages")
 
         rospy.loginfo("Summary of current gait parameters:")
- #       rospy.loginfo("overlap time: %.2f", self.config.overlap_time)
- #      rospy.loginfo("swing time: %.2f", self.config.swing_time)
- #       rospy.loginfo("z clearance: %.2f", self.config.z_clearance)
- #       rospy.loginfo("back leg x shift: %.2f", self.config.rear_leg_x_shift)
- #       rospy.loginfo("front leg x shift: %.2f", self.config.front_leg_x_shift)
+        rospy.loginfo("overlap time: %.2f" % self.config.overlap_time)
+        rospy.loginfo("swing time: %.2f" % self.config.swing_time)
+        rospy.loginfo("z clearance: %.2f" % self.config.z_clearance)
+        rospy.loginfo("back leg x shift: %.2f" % self.config.rear_leg_x_shift)
+        rospy.loginfo("front leg x shift: %.2f" % self.config.front_leg_x_shift)
 
         
     
@@ -116,6 +114,7 @@ class DingoDriver:
             if self.is_physical:
                 # Update the pwm widths going to the servos
                 self.hardware_interface.set_actuator_postions(self.state.joint_angles)
+
             while self.state.currently_estopped == 0:
                 time.start = rospy.Time.now()
 
@@ -245,6 +244,12 @@ def main():
     """Main program
     """
     rospy.init_node("dingo_driver") 
+
+    args = rclpy.utilities.remove_ros_args()
+    is_sim = int(args[1])
+    is_physical = int(args[2])
+    use_imu = int(args[3])
+
     signal.signal(signal.SIGINT, signal_handler)
     dingo = DingoDriver(is_sim, is_physical, use_imu)
     dingo.run()

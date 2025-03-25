@@ -12,6 +12,8 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
+
+
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='seek',
@@ -21,7 +23,7 @@ setup(
     tests_require=['pytest'],
         entry_points={
         'console_scripts': [
-            'dingo_input_interfacing = dingo_input_interfacing.Keyboard:main'
+            'Keyboard = dingo_input_interfacing.Keyboard:main'
         ],
     },
     

@@ -115,7 +115,7 @@ def main():
     rospy.init_node("keyboard_input_listener")
     rate = rospy.Rate(30)
 
-    if os.getenv("DISPLY", default="-") != "-":
+    if os.getenv("DISPLAY", default="-") != "-":
         rospy.logfatal("This device does not have a display connected. The keyboard node requires a connected display due to a limitation of the underlying package. Keyboard node now shutting down")
         rospy.sleep(1)
         sys.exit(0)

@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 from adafruit_servokit import ServoKit
 import busio
-from board import SCL, SDA
+#from board import SCL, SDA
 import numpy as np
 import math as m
 import rospy2 as rospy
 
 class HardwareInterface():
     def __init__(self,link):
-        self.pwm_max = 2400
-        self.pwm_min = 370
+        self.pwm_max = 2400 ## ATTENTION: this values depend on the used SERVO MOTOR!
+        self.pwm_min = 750  ## ATTENTION: this values depend on the used SERVO MOTOR!
         self.link = link
         self.servo_angles = np.zeros((3,4))
-        self.kit = ServoKit(channels=16, i2c = (busio.I2C(SCL, SDA)) ) #Defininng a new set of servos uising the Adafruit ServoKit LIbrary
-        
+        self.kit = ServoKit(channels=16)
+
+#        self.kit = ServoKit(channels=16, i2c = (busio.I2C(SCL, SDA)) ) #Defininng a new set of servos uising the Adafruit ServoKit LIbrary
+#       self.kit.servo[0].actuation_range = 180 # default = 180 grad
+#       self.kit.servo[0].set_pulse_width_range(750, 2500) # default 750 -2250
+
         """ SERVO INDICES, CALIBRATION MULTIPLIERS AND OFFSETS
             #   ROW:    which joint of leg to control 0:hip, 1: upper leg, 2: lower leg
             #   COLUMN: which leg to control. 0: front-right, 1: front-left, 2: back-right, 3: back-left.
@@ -77,7 +81,9 @@ class HardwareInterface():
         for leg_index in range(4):
             for axis_index in range(3):
                 try:
-                    self.kit.servo[self.pins[axis_index,leg_index]].angle = self.servo_angles[axis_index,leg_index]
+                    ssa = self.servo_angles[axis_index,leg_index]
+#                    rospy.logwarn("leg: %d axis %d angle %d" % (leg_index, axis_index,ssa))
+                    self.kit.servo[self.pins[axis_index,leg_index]].angle = ssa 
                 except:
                     rospy.logwarn("Warning - I2C IO error")
 ## HERE ##

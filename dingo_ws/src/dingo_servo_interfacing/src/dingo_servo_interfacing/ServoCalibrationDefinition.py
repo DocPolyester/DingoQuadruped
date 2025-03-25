@@ -7,7 +7,7 @@ import math as m
 class motor_config():
     def __init__(self):
         self.pwm_max = 2400
-        self.pwm_min = 370
+        self.pwm_min = 750
         self.kit = ServoKit(channels=16) #Defininng a new set of servos uising the Adafruit ServoKit LIbrary
         
         #DefinING servo indices
